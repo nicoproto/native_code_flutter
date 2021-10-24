@@ -23,7 +23,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  var _batteryLevel;
+  late int _batteryLevel = 8;
 
   Future<void> _getBatteryLevel() async {
     const platform = MethodChannel('course.flutter.dev/battery');
@@ -33,17 +33,17 @@ class _MyHomePageState extends State<MyHomePage> {
       setState(() {
         _batteryLevel = batteryLevel;
       });
-    } on PlatformException catch (error) {
+    } on PlatformException catch (_) {
       setState(() {
-        _batteryLevel = null;
+        _batteryLevel = -1;
       });
     }
   }
 
   @override
   void initState() {
-
     super.initState();
+    _getBatteryLevel();
   }
 
   @override
@@ -53,7 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text('Native Code'),
       ),
       body: Center(
-        child: Text('Battery Level: ...'),
+        child: Text('Battery Level: $_batteryLevel'),
       ),
     );
   }
